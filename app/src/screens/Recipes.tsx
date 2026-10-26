@@ -6,6 +6,7 @@ import { useAccess } from '../license/AccessProvider';
 import { searchRecipes } from '../ui/RecipePicker';
 import { Icon } from '../ui/Icon';
 import { Empty } from '../ui/kit';
+import { dishImage } from '../ui/dishImage';
 
 type Filter = 'todas' | 'favoritas' | 'mias' | 'tandas' | RecipeCategory;
 
@@ -72,7 +73,9 @@ export function Recipes({ limited }: { limited: boolean }) {
 
       {visible.map((r) => (
         <a key={r.id} className="recipe-card" href={`#/receta/${r.id}`}>
-          <span className="thumb">{r.photo ? <img src={r.photo} alt="" loading="lazy" /> : <Icon name={r.source === 'propia' ? 'star' : 'pot'} />}</span>
+          <span className="thumb">
+            <img src={dishImage(r)} alt="" loading="lazy" />
+          </span>
           <span className="grow">
             <h3>{r.name}</h3>
             <span className="small muted">

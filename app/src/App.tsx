@@ -123,6 +123,7 @@ function Shell({ children, title, showBack }: { children: ReactNode; title: stri
             <Icon name="back" />
           </button>
         ) : null}
+        {!showBack && title === 'La comida justa' ? <img className="brand-mark" src="/favicon.svg" alt="" /> : null}
         <h1>
           {title}
           {!showBack && title === 'La comida justa' ? <span className="brand">Llegar a fin de mes</span> : null}

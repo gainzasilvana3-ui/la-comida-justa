@@ -83,7 +83,7 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+          globPatterns: ['**/*.{js,css,html,svg,png,webp,jpg,woff2,webmanifest}'],
           navigateFallback: '/index.html',
           cleanupOutdatedCaches: true,
           // Las llamadas al servidor de licencias nunca se guardan en caché.
