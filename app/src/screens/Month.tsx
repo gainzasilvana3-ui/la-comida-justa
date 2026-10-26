@@ -331,7 +331,7 @@ export function Month() {
             return (
               <li key={it.recipeId} style={{ display: 'block' }}>
                 <div className="row between nowrap">
-                  <strong className="grow">{r?.name ?? 'Receta que ya no está'}</strong>
+                  <strong className="grow">{r?.name ?? 'Receta no disponible'}</strong>
                   <button
                     className="icon-btn"
                     aria-label={`Quitar ${r?.name ?? 'receta'}`}
