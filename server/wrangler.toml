@@ -1,0 +1,52 @@
+# Servidor de licencias de La comida justa.
+# Antes de publicar, completá los valores marcados con <...> (ver docs/PUBLICAR.md).
+# Los secretos NO van acá: se cargan con `wrangler secret put`.
+name = "lcj-licencias"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+workers_dev = false
+
+[assets]
+directory = "./admin-ui"
+binding = "ASSETS"
+run_worker_first = true
+
+[triggers]
+# Limpieza diaria de límites de intentos y errores viejos.
+crons = ["17 6 * * *"]
+
+[vars]
+ENVIRONMENT = "production"
+# Origen exacto de la app publicada, ej. "https://app.tudominio.com"
+APP_ORIGIN = "<https://tu-app.pages.dev>"
+# Dominio del equipo de Cloudflare Access, ej. "tuequipo.cloudflareaccess.com"
+ACCESS_TEAM_DOMAIN = "<tuequipo.cloudflareaccess.com>"
+# "Application Audience (AUD) Tag" de la aplicación de Access que protege /admin
+ACCESS_AUD = "<aud-de-access>"
+# Mails autorizados a entrar al panel, separados por coma
+ADMIN_EMAILS = "<tu-mail@ejemplo.com>"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lcj-licencias"
+database_id = "<id-de-la-base-d1>"
+migrations_dir = "migrations"
+
+# Entorno local de desarrollo: `npm run dev -w server`
+[env.dev]
+workers_dev = true
+
+[env.dev.vars]
+ENVIRONMENT = "development"
+APP_ORIGIN = "http://localhost:5173"
+ACCESS_TEAM_DOMAIN = "local.invalid"
+ACCESS_AUD = "dev"
+ADMIN_EMAILS = "dev@local"
+# Solo en desarrollo: entra al panel sin Cloudflare Access. El servidor lo ignora en producción.
+ADMIN_DEV_BYPASS = "true"
+
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "lcj-licencias"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"

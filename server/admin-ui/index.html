@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel · La comida justa</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <strong>La comida justa</strong> · Panel de licencias
+    </div>
+    <span id="who" class="muted"></span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+    <button role="tab" data-tab="generar">Generar códigos</button>
+    <button role="tab" data-tab="licencias">Licencias</button>
+    <button role="tab" data-tab="catalogo">Recetas</button>
+    <button role="tab" data-tab="ajustes">Ajustes</button>
+    <button role="tab" data-tab="errores">Errores</button>
+    <button role="tab" data-tab="registro">Registro</button>
+  </nav>
+
+  <main>
+    <div id="msg" role="status" aria-live="polite" hidden></div>
+
+    <section id="tab-resumen">
+      <h2>Resumen</h2>
+      <div id="stats" class="cards"></div>
+      <p class="muted">Los datos personales de los compradores no se guardan en el servidor. Las recetas, menús y listas de cada comprador están solo en su teléfono.</p>
+    </section>
+
+    <section id="tab-generar" hidden>
+      <h2>Generar códigos de activación</h2>
+      <p>Cada código sirve para <strong>una</strong> compra. Se muestran una sola vez: descargalos o copialos antes de salir de esta pantalla.</p>
+      <form id="form-batch" class="form">
+        <label>Cantidad <input name="count" type="number" min="1" max="500" value="10" required></label>
+        <label>Nombre de la tanda (opcional) <input name="batch" maxlength="60" placeholder="ej. lanzamiento-noviembre"></label>
+        <label>Referencia (opcional) <input name="reference" maxlength="60" placeholder="ej. número de orden, sin datos personales"></label>
+        <label>Dispositivos por compra <input name="maxDevices" type="number" min="1" max="5" placeholder="usa el valor de Ajustes"></label>
+        <button type="submit">Generar</button>
+      </form>
+      <div id="batch-result" hidden>
+        <h3>Códigos nuevos</h3>
+        <p><button id="dl-csv" type="button">Descargar CSV</button> <button id="copy-codes" type="button">Copiar todos</button></p>
+        <textarea id="codes-text" rows="10" readonly></textarea>
+      </div>
+    </section>
+
+    <section id="tab-licencias" hidden>
+      <h2>Licencias</h2>
+      <form id="form-lookup" class="form inline">
+        <label>Buscar por código del comprador <input name="code" placeholder="LCJ-... o RCP-..." autocomplete="off"></label>
+        <button type="submit">Buscar</button>
+      </form>
+      <form id="form-search" class="form inline">
+        <label>Filtrar <input name="q" placeholder="id, tanda o referencia"></label>
+        <label>Estado
+          <select name="status">
+            <option value="">Todas</option>
+            <option value="unused">Sin activar</option>
+            <option value="active">Activas</option>
+            <option value="revoked">Revocadas</option>
+          </select>
+        </label>
+        <button type="submit">Filtrar</button>
+      </form>
+      <div class="table-wrap"><table id="lic-table"><thead><tr>
+        <th>Licencia</th><th>Estado</th><th>Tanda</th><th>Referencia</th><th>Creada</th><th>Activada</th><th>Disp.</th>
+      </tr></thead><tbody></tbody></table></div>
+      <p><button id="lic-more" type="button" hidden>Ver más</button></p>
+      <div id="lic-detail" class="panel" hidden></div>
+    </section>
+
+    <section id="tab-catalogo" hidden>
+      <h2>Versiones del catálogo de recetas</h2>
+      <p>Subí el archivo <code>catalog/catalogo.json</code> (se genera con <code>npm run catalog:build</code>). Se valida antes de guardarlo. Recién al <strong>publicar</strong> una versión les llega a los compradores.</p>
+      <form id="form-catalog" class="form">
+        <label>Archivo JSON <input name="file" type="file" accept="application/json,.json" required></label>
+        <label>Nota (opcional) <input name="notes" maxlength="200"></label>
+        <button type="submit">Subir versión</button>
+      </form>
+      <div class="table-wrap"><table id="cat-table"><thead><tr>
+        <th>Versión</th><th>Recetas</th><th>Nota</th><th>Subida</th><th>Estado</th><th></th>
+      </tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section id="tab-ajustes" hidden>
+      <h2>Ajustes</h2>
+      <form id="form-settings" class="form">
+        <label>Dispositivos por compra (para códigos nuevos) <input name="default_max_devices" type="number" min="1" max="5"></label>
+        <label>Cambios de dispositivo autogestionados por año <input name="transfers_per_year" type="number" min="0" max="20"></label>
+        <label>Última versión de la app publicada <input name="latest_app_version" pattern="\d+\.\d+\.\d+" placeholder="1.0.0"></label>
+        <button type="submit">Guardar</button>
+      </form>
+      <p class="muted">Cuando publicás una versión nueva de la app, actualizá este número: los teléfonos que tengan una versión anterior verán un aviso para actualizar.</p>
+    </section>
+
+    <section id="tab-errores" hidden>
+      <h2>Errores técnicos (últimos 30 días)</h2>
+      <div class="table-wrap"><table id="err-table"><thead><tr><th>Fecha</th><th>Versión</th><th>Dónde</th><th>Mensaje</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section id="tab-registro" hidden>
+      <h2>Registro de acciones del panel</h2>
+      <div class="table-wrap"><table id="audit-table"><thead><tr><th>Fecha</th><th>Quién</th><th>Acción</th><th>Detalle</th></tr></thead><tbody></tbody></table></div>
+    </section>
+  </main>
+  <script src="admin.js" defer></script>
+</body>
+</html>

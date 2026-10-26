@@ -1,0 +1,7 @@
+# Copiá este archivo a .dev.vars (no se sube al repositorio) o generalo con:
+#   npm run keys:dev
+# En producción estos valores se cargan con `wrangler secret put NOMBRE`.
+LICENSE_SIGNING_KEY={"kty":"EC","crv":"P-256","x":"...","y":"...","d":"..."}
+CODE_PEPPER=un-texto-largo-y-aleatorio
+# Opcional en desarrollo, obligatorio en producción:
+TURNSTILE_SECRET=

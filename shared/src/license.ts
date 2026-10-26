@@ -141,7 +141,7 @@ export function licenseState(claims: LicenseClaims, nowMs: number = Date.now()):
 
 /** Texto canónico que firma el dispositivo al renovar. */
 export function renewMessage(deviceId: string, timestamp: number): Uint8Array<ArrayBuffer> {
-  return enc.encode(`lcj-renew|${deviceId}|${timestamp}`);
+  return new Uint8Array(enc.encode(`lcj-renew|${deviceId}|${timestamp}`));
 }
 
 export async function importPublicJwk(jwk: JsonWebKey): Promise<CryptoKey> {
