@@ -14,6 +14,14 @@ Además se usa **Turnstile** (gratis) para frenar robots en la pantalla de activ
 
 Tiempo estimado: una tarde, la primera vez.
 
+> **Atajo:** `scripts/publicar-cloudflare.mjs` hace los pasos 1 a 9 solo (usa direcciones gratuitas `*.pages.dev` y `*.workers.dev`). Necesita una API token de Cloudflare con permisos de Workers, D1, Pages, Turnstile y Access:
+>
+> ```bash
+> CLOUDFLARE_API_TOKEN=... ADMIN_EMAIL=tu@mail.com SUPPORT_CONTACT=tu@mail.com npm run publicar
+> ```
+>
+> Se puede volver a correr: reutiliza lo que ya existe y no cambia las claves. Las claves secretas quedan solo en Cloudflare. Los datos públicos (direcciones, clave pública) quedan en `.publicacion.json`: guardá ese archivo, porque se necesita para volver a publicar la app.
+
 ---
 
 ## 0. Lo que necesitás
