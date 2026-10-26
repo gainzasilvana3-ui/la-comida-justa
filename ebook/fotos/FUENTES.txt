@@ -1,14 +1,14 @@
-portada.jpg | https://unsplash.com/photos/QK4Ov_0APVU | Alehandra | Unsplash License
-bienvenida.jpg | https://unsplash.com/photos/-8a5eJ1-mmQ | Alexander Grey | Unsplash License
-cap1.jpg | https://unsplash.com/photos/dz35efCT3ZA | Torbjørn Helgesen | Unsplash License
-cap2.jpg | https://unsplash.com/photos/nxx1S5dGUTE | Alexander Schimmeck | Unsplash License
-cap3.jpg | https://unsplash.com/photos/tT2DSShVDTI | Eliza Diamond | Unsplash License
-cap4.jpg | https://unsplash.com/photos/tOneNg7t0cM | Matheus Araujo | Unsplash License
+portada.jpg | https://unsplash.com/photos/AeiVIKfOg4M | Maksimas | Unsplash License
+bienvenida.jpg | https://unsplash.com/photos/6q4JkCp6scA | davide ragusa | Unsplash License
+cap1.jpg | https://unsplash.com/photos/333oj7zFsdg | lilartsy | Unsplash License
+cap2.jpg | https://unsplash.com/photos/Dc2SRspMak4 | Andre Taissin | Unsplash License
+cap3.jpg | https://unsplash.com/photos/H2xXOudzrqI | Donna Brown | Unsplash License
+cap4.jpg | https://unsplash.com/photos/gC-cKJebRhg | Onur Burak Akın | Unsplash License
 cap5.jpg | https://unsplash.com/photos/NOAzwcMzZJA | Kim Deachul | Unsplash License
-cap6.jpg | https://unsplash.com/photos/vkvHBK8n_gs | Chanhee Lee | Unsplash License
+cap6.jpg | https://unsplash.com/photos/jEz1vTKmnj8 | Jan Kraus | Unsplash License
 cap7.jpg | https://unsplash.com/photos/wH_avVRSuJM | Nellie Adamyan | Unsplash License
-cap8.jpg | https://unsplash.com/photos/3-Tc_5LROrM | Kelly Sikkema | Unsplash License
+cap8.jpg | https://www.pexels.com/photo/a-mobile-phone-with-calculator-on-a-wooden-table-6927351/ | Polina Tankilevitch | Pexels License
 cap9.jpg | https://unsplash.com/photos/EzH46XCDQRY | Maarten van den Heuvel | Unsplash License
-cap10.jpg | https://unsplash.com/photos/l6I8jpzKJQU | Content Pixie | Unsplash License
-cap11.jpg | https://unsplash.com/photos/nmw6F2wdaUc | blackieshoot | Unsplash License
+cap10.jpg | https://unsplash.com/photos/S2frPlgkA5M | Kelly Sikkema | Unsplash License
+cap11.jpg | https://unsplash.com/photos/AZgoKxpfq44 | Izabelly Marques | Unsplash License
 cierre.jpg | https://unsplash.com/photos/Q_Moi2xjieU | Stefan Vladimirov | Unsplash License
