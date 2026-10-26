@@ -176,7 +176,7 @@ export function Shopping({ limited }: { limited: boolean }) {
 
   const groups = groupByCategory(list.items.filter((i) => !i.toTaste || i.manual));
   const toTaste = list.items.filter((i) => i.toTaste && !i.manual);
-  const pendingCount = list.items.filter((i) => !i.checked && !i.toTaste && (effectiveToBuy(i) ?? 0) > 0).length;
+  const pendingCount = list.items.filter((i) => !i.checked && !i.toTaste && (effectiveToBuy(i) ?? 1) > 0).length;
   const cost = shoppingCost(list.items.filter((i) => !i.checked), prices);
   const budget = list.budget ?? null;
 

@@ -80,8 +80,7 @@ function BlockedNotice() {
   return (
     <div className="notice danger">
       <p>
-        <strong>{state.reason === 'revoked' ? 'Esta licencia fue dada de baja.' : 'Esta licencia se está usando en otro dispositivo.'}</strong>{' '}
-        {state.message}
+        <strong>{state.reason === 'revoked' ? 'Esta licencia fue dada de baja.' : 'Esta licencia se está usando en otro dispositivo.'}</strong>
       </p>
       <p>Tus recetas propias, listas y despensa siguen guardadas: podés verlas y exportarlas desde Ajustes.</p>
       <button

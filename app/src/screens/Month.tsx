@@ -430,7 +430,7 @@ export function Month() {
           <ul className="list">
             {sessions.map((s) => (
               <li key={s.date} style={{ display: 'block' }}>
-                <strong>{formatShortDay(s.date)}</strong>{' '}
+                <strong>{s.date < todayIso() ? 'Hoy' : formatShortDay(s.date)}</strong>{' '}
                 <span className="small muted">
                   (cubre {formatShortDay(s.coversFrom)} a {formatShortDay(s.coversTo)})
                 </span>

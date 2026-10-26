@@ -40,8 +40,9 @@ async function route(req: Request, env: Env): Promise<Response> {
       if (!env.ASSETS) throw new HttpError(503, 'no_assets', 'Panel no disponible.');
       if (path === '/admin') return Response.redirect(`${url.origin}/admin/`, 302);
       const assetPath = path.slice('/admin'.length) || '/';
-      const assetUrl = new URL(assetPath === '/' ? '/index.html' : assetPath, url.origin);
-      const asset = await env.ASSETS.fetch(new Request(assetUrl, req));
+      // El binding de assets sirve index.html en "/" (pedir "/index.html" devuelve una redirección).
+      const asset = await env.ASSETS.fetch(new Request(new URL(assetPath, url.origin), req));
+      if (asset.status >= 300 && asset.status < 400) throw new HttpError(404, 'not_found', 'No encontrado.');
       return withSecurityHeaders(asset, { 'Content-Security-Policy': ADMIN_CSP, 'Cache-Control': 'no-store' });
     } catch (e) {
       return toErrorResponse(e);

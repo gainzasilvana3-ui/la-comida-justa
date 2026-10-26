@@ -55,7 +55,7 @@ export function Icon({ name, title, className }: { name: IconName; title?: strin
       strokeLinejoin="round"
       aria-hidden={title ? undefined : true}
       role={title ? 'img' : undefined}
-      className={className}
+      className={className ? `icon ${className}` : 'icon'}
     >
       {title ? <title>{title}</title> : null}
       <path d={PATHS[name]} />

@@ -31,7 +31,7 @@ export function Home() {
 
   const todayMeals = plan?.entries.filter((e) => e.date === today) ?? [];
   const soon = useFirst(pantry).filter((p) => p.days !== null && p.days <= 3);
-  const pending = list?.items.filter((i) => !i.checked && (effectiveToBuy(i) ?? 1) > 0).length ?? 0;
+  const pending = list?.items.filter((i) => !i.checked && !i.toTaste && (effectiveToBuy(i) ?? 1) > 0).length ?? 0;
   const lastBackup = prefs?.lastBackupAt;
   const backupOld = !lastBackup || Date.now() - Date.parse(lastBackup) > 30 * 86400_000;
   const hasData = pantry.length > 0 || Boolean(plan) || Boolean(list);

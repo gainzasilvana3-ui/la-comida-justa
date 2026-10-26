@@ -217,6 +217,8 @@ input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="
 }
 
 /* utilidades */
+:where(svg.icon) { width: 1.2em; height: 1.2em; flex: none; vertical-align: -0.2em; }
+:where(h2, h3) > :where(svg.icon) { color: var(--verde-osc); margin-right: 4px; }
 .flip { transform: rotate(180deg); }
 .inline-icon { width: 1.05em; height: 1.05em; vertical-align: -0.15em; display: inline-block; }
 fieldset.field { border: 1px solid var(--crema-2); border-radius: 12px; padding: 10px 12px 4px; margin: 0 0 12px; }
