@@ -20,9 +20,9 @@ ENVIRONMENT = "production"
 # Origen exacto de la app publicada, ej. "https://app.tudominio.com"
 APP_ORIGIN = "https://la-comida-justa.pages.dev"
 # Dominio del equipo de Cloudflare Access, ej. "tuequipo.cloudflareaccess.com"
-ACCESS_TEAM_DOMAIN = "<tuequipo.cloudflareaccess.com>"
+ACCESS_TEAM_DOMAIN = "royal-surf-c079.cloudflareaccess.com"
 # "Application Audience (AUD) Tag" de la aplicación de Access que protege /admin
-ACCESS_AUD = "<aud-de-access>"
+ACCESS_AUD = "9efca66d4e857fc0cb4db15d3f1555bb92e01168bbfc82c9004e3492c951070d"
 # Mails autorizados a entrar al panel, separados por coma
 ADMIN_EMAILS = "gainzasilvana3@gmail.com"
 
