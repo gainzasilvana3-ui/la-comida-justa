@@ -8,6 +8,7 @@ import { useAccess } from '../license/AccessProvider';
 import { formatDay, todayIso } from '../lib/id';
 import { Icon, type IconName } from '../ui/Icon';
 import { InstallHelp, isStandalone } from './Help';
+import { TABLE_IMAGE, dishImage } from '../ui/dishImage';
 
 const TILES: { href: string; label: string; hint: string; icon: IconName }[] = [
   { href: '#/menu', label: 'Planificar menú', hint: 'Almuerzos y cenas', icon: 'calendar' },
@@ -30,6 +31,7 @@ export function Home() {
   const pantry = useLiveQuery(() => db.pantry.toArray(), []) ?? [];
 
   const todayMeals = plan?.entries.filter((e) => e.date === today) ?? [];
+  const firstToday = todayMeals.map((e) => byId.get(e.recipeId)).find(Boolean);
   const soon = useFirst(pantry).filter((p) => p.days !== null && p.days <= 3);
   const pending = list?.items.filter((i) => !i.checked && !i.toTaste && (effectiveToBuy(i) ?? 1) > 0).length ?? 0;
   const lastBackup = prefs?.lastBackupAt;
@@ -53,7 +55,8 @@ export function Home() {
         </div>
       ) : null}
 
-      <div className="card">
+      <div className="card has-hero">
+        <img className="card-hero" src={firstToday ? dishImage(firstToday) : TABLE_IMAGE} alt="" />
         <h2>
           <Icon name="pot" /> Hoy, {formatDay(today).split(',')[0]?.toLowerCase()}
         </h2>

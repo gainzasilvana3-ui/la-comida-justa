@@ -20,6 +20,7 @@ import { addToActiveList } from '../lib/shopping';
 import { newId, todayIso, mondayOf, formatShortDay } from '../lib/id';
 import { DinersEditor, defaultDiners } from '../ui/DinersEditor';
 import { RecipePicker } from '../ui/RecipePicker';
+import { dishImage } from '../ui/dishImage';
 import { Icon } from '../ui/Icon';
 import { Field, Modal, NumberInput, useConfirm, useSafeWrite } from '../ui/kit';
 
@@ -143,6 +144,7 @@ export function Portions({ recipeId }: { recipeId?: string }) {
         </h2>
         {recipe ? (
           <div className="row between nowrap">
+            <img className="mini-thumb" src={dishImage(recipe)} alt="" />
             <a className="grow" href={`#/receta/${recipe.id}`}>
               <strong>{recipe.name}</strong>
             </a>

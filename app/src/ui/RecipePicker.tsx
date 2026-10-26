@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { RECIPE_CATEGORY_LABELS, normalizeName, type Recipe } from '@lcj/shared';
 import { Modal } from './kit';
-import { Icon } from './Icon';
+import { dishImage } from './dishImage';
 
 export function searchRecipes(recipes: Recipe[], q: string): Recipe[] {
   const n = normalizeName(q);
@@ -40,7 +40,7 @@ export function RecipePicker({
         {list.map((r) => (
           <li key={r.id}>
             <button className="btn ghost block" style={{ justifyContent: 'flex-start', textAlign: 'left' }} onClick={() => onPick(r)}>
-              <Icon name={r.source === 'propia' ? 'star' : 'book'} />
+              <img className="mini-thumb" src={dishImage(r)} alt="" loading="lazy" />
               <span className="grow">
                 {r.name}
                 <br />

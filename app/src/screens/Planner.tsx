@@ -25,6 +25,7 @@ import { formatDay, formatShortDay, mondayOf, newId, todayIso } from '../lib/id'
 import { go } from '../lib/router';
 import { DinersEditor, defaultDiners, dinersSummary } from '../ui/DinersEditor';
 import { RecipePicker } from '../ui/RecipePicker';
+import { dishImage } from '../ui/dishImage';
 import { Icon } from '../ui/Icon';
 import { Empty, Field, Modal, NumberInput, useConfirm, useSafeWrite } from '../ui/kit';
 
@@ -255,6 +256,7 @@ export function Planner() {
                 {entries.map((e) => (
                   <div key={e.id} className="meal">
                     <button className="btn ghost small grow" style={{ justifyContent: 'flex-start', textAlign: 'left' }} onClick={() => setModal({ kind: 'menu', entry: e })}>
+                      {byId.get(e.recipeId) ? <img className="mini-thumb" src={dishImage(byId.get(e.recipeId)!)} alt="" loading="lazy" /> : null}
                       <span className="grow">
                         {recipeName(e.recipeId)}
                         <br />

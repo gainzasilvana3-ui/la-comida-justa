@@ -14,6 +14,7 @@ import { go } from '../lib/router';
 import { Icon } from '../ui/Icon';
 import { Empty, useConfirm, useSafeWrite } from '../ui/kit';
 import { AddToPlanButton } from './Portions';
+import { dishImage } from '../ui/dishImage';
 
 export function RecipeDetail({ id, limited }: { id: string; limited: boolean }) {
   const { byId, loading } = useAllRecipes();
@@ -37,8 +38,8 @@ export function RecipeDetail({ id, limited }: { id: string; limited: boolean }) 
 
   return (
     <div>
-      <div className="card">
-        {r.photo ? <img src={r.photo} alt="" style={{ width: '100%', borderRadius: 12, marginBottom: 12 }} /> : null}
+      <div className="card has-hero">
+        <img className="card-hero" src={dishImage(r)} alt="" />
         <div className="row between nowrap">
           <h1 className="grow">{r.name}</h1>
           <button
