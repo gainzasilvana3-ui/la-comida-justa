@@ -1,5 +1,5 @@
 // Configuración pública de la app (variables VITE_*). Nada de esto es secreto.
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.1.0';
 
 export const config = {
   apiBase: (import.meta.env.VITE_API_BASE ?? '').replace(/\/+$/, ''),
