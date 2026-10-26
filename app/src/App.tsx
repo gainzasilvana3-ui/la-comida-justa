@@ -60,7 +60,16 @@ function UpdateBanner() {
   const {
     needRefresh: [needRefresh],
     updateServiceWorker,
-  } = useRegisterSW({ immediate: true });
+  } = useRegisterSW({
+    immediate: true,
+    // Busca versiones nuevas cada vez que la persona vuelve a la app, no solo al abrirla de cero.
+    onRegisteredSW(_url, registration) {
+      if (!registration) return;
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && navigator.onLine) void registration.update().catch(() => {});
+      });
+    },
+  });
   if (!needRefresh) return null;
   return (
     <div className="notice no-print" role="status">
