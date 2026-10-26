@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env.local
+.env.*.local
+*.log
+coverage/
+test-results/
+playwright-report/
+server/keys/

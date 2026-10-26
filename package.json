@@ -1,0 +1,19 @@
+{
+  "name": "la-comida-justa",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "La comida justa (Llegar a fin de mes): PWA de planificación de comidas, porciones y compras, con servidor de licencias.",
+  "workspaces": ["shared", "app", "server"],
+  "scripts": {
+    "dev:app": "npm run dev -w app",
+    "dev:server": "npm run dev -w server",
+    "build": "npm run build -w app",
+    "test": "npm run test -w shared && npm run test -w app && npm run test -w server",
+    "typecheck": "npm run typecheck -w shared && npm run typecheck -w app && npm run typecheck -w server",
+    "keys:dev": "node server/scripts/generate-keys.mjs",
+    "catalog:check": "npm run catalog:check -w shared",
+    "catalog:build": "node catalog/build.ts"
+  },
+  "engines": { "node": ">=20" }
+}
