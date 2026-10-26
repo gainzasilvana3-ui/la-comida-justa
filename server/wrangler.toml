@@ -4,7 +4,7 @@
 name = "lcj-licencias"
 main = "src/index.ts"
 compatibility_date = "2026-08-01"
-workers_dev = false
+workers_dev = true
 
 [assets]
 directory = "./admin-ui"
@@ -18,18 +18,18 @@ crons = ["17 6 * * *"]
 [vars]
 ENVIRONMENT = "production"
 # Origen exacto de la app publicada, ej. "https://app.tudominio.com"
-APP_ORIGIN = "<https://tu-app.pages.dev>"
+APP_ORIGIN = "https://la-comida-justa.pages.dev"
 # Dominio del equipo de Cloudflare Access, ej. "tuequipo.cloudflareaccess.com"
 ACCESS_TEAM_DOMAIN = "<tuequipo.cloudflareaccess.com>"
 # "Application Audience (AUD) Tag" de la aplicación de Access que protege /admin
 ACCESS_AUD = "<aud-de-access>"
 # Mails autorizados a entrar al panel, separados por coma
-ADMIN_EMAILS = "<tu-mail@ejemplo.com>"
+ADMIN_EMAILS = "gainzasilvana3@gmail.com"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "lcj-licencias"
-database_id = "<id-de-la-base-d1>"
+database_id = "31038d75-0c87-4439-88c4-c45f4200e569"
 migrations_dir = "migrations"
 
 # Entorno local de desarrollo: `npm run dev -w server`
