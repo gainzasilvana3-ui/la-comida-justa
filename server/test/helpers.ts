@@ -1,6 +1,6 @@
 import { build } from 'esbuild';
 import { Miniflare } from 'miniflare';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { SignJWT, exportJWK, generateKeyPair } from 'jose';
 import { ES256, importPublicJwk, jwkThumbprint, signRenewal } from '@lcj/shared';
@@ -76,12 +76,14 @@ export async function setup(bindings: Record<string, string> = {}): Promise<Test
   });
 
   const db = await mf.getD1Database('DB');
-  const sql = readFileSync(here('../migrations/0001_init.sql'), 'utf8')
-    .split('\n')
-    .filter((l) => !l.trim().startsWith('--'))
-    .join('\n');
-  for (const stmt of sql.split(';').map((s) => s.trim()).filter(Boolean)) {
-    await db.prepare(stmt).run();
+  for (const file of readdirSync(here('../migrations')).filter((f) => f.endsWith('.sql')).sort()) {
+    const sql = readFileSync(here(`../migrations/${file}`), 'utf8')
+      .split('\n')
+      .filter((l) => !l.trim().startsWith('--'))
+      .join('\n');
+    for (const stmt of sql.split(';').map((s) => s.trim()).filter(Boolean)) {
+      await db.prepare(stmt).run();
+    }
   }
 
   const adminToken = (email = ADMIN) =>

@@ -20,6 +20,17 @@ export async function hmac(env: Env, purpose: string, value: string): Promise<st
   return b64urlEncode(new Uint8Array(sig));
 }
 
+/**
+ * Clave para activar con "mail + número de pedido". El mail se pasa a minúsculas y del pedido
+ * quedan solo los dígitos, así "#4821" y "4821" dan lo mismo. Devuelve null si falta algo.
+ */
+export async function claimHash(env: Env, email: string, orderNumber: string | number): Promise<string | null> {
+  const mail = email.trim().toLowerCase();
+  const order = String(orderNumber).replace(/\D/g, '').replace(/^0+/, '');
+  if (!mail.includes('@') || !order) return null;
+  return hmac(env, 'claim', `${mail}|${order}`);
+}
+
 export function signingKey(env: Env): Promise<CryptoKey> {
   let k = signingKeys.get(env.LICENSE_SIGNING_KEY);
   if (!k) {

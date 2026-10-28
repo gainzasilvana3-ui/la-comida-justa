@@ -23,14 +23,29 @@ Pestaña **Generar códigos**:
 
 Al generar, el panel muestra los códigos **una sola vez**, con botones para copiarlos y descargar un CSV. Guardá el CSV en un lugar privado.
 
-## Entregar el código al comprador
+## Ventas de Impultienda: automático
 
-Hoy la entrega es **manual**: copiás un código sin usar y se lo mandás al comprador junto con el link de la app y la [guía para compradores](GUIA-COMPRADORES.md). Algunas formas:
+Cuando alguien compra la app en Impultienda, Impultienda le avisa al servidor (webhook «Pago confirmado») y el servidor crea la licencia solo. El comprador **no recibe ningún código**: abre la app, toca **Ya compré** y escribe el mail con el que pagó y su número de pedido. Desde ahí sigue igual que siempre (código de recuperación, 2 dispositivos, cambio de celular).
 
-- Pegarlo en el mail de entrega del ebook, uno distinto por venta.
-- Si tu plataforma de ventas permite entregar un texto o archivo distinto por compra, cargar ahí los códigos.
+- En el panel, esas licencias aparecen en la tanda `impultienda` con la referencia `Pedido 4821`. Buscá por número de pedido.
+- **Reembolso o contracargo** en Impultienda: la licencia se revoca sola (motivo "Reembolso en Impultienda (pedido …)").
+- Qué productos dan la app: `APP_PRODUCT_IDS` en `server/wrangler.toml` (el id se copia con el botón "copiar ID" en Impultienda → Personalización → Ebooks).
+- Si alguien no puede activar con mail y pedido (por ejemplo, escribió mal el mail al pagar): buscá la licencia por número de pedido, tocá **Generar código nuevo** y mandale ese código `LCJ-…`. En la app, debajo del botón Activar, tiene **Tengo un código LCJ**.
+- Un upsell post-compra (oferta 1-click después de pagar) llega con su propio número de pedido: el comprador tiene que usar ese número, no el de la compra del ebook.
 
-El servidor no está conectado a ninguna plataforma de pagos. Automatizar la entrega (que cada venta genere su código sola) se puede agregar más adelante con un aviso automático (webhook) de la plataforma de ventas; no está hecho.
+Cómo se conecta, una sola vez:
+
+1. En Impultienda → Configuraciones → Webhooks → **Agregar endpoint**. URL: `https://<dirección-del-servidor>/webhooks/impultienda`. Eventos: «Pago confirmado», «Reembolso» y «Contracargo».
+2. Copiá la **clave de firma** que muestra Impultienda y cargala en el servidor (es secreta, no la pegues en ningún chat):
+   ```
+   npx wrangler secret put IMPULTIENDA_WEBHOOK_SECRET
+   ```
+   (correlo dentro de la carpeta `server`; te pide que pegues la clave).
+3. Probalo con el botón **Probar** del endpoint, eligiendo el producto de la app. Por defecto el aviso de prueba no crea nada y el servidor responde `{"ok":true,"test":true}`.
+
+## Entregar un código a mano
+
+Para ventas que no pasan por Impultienda: copiás un código sin usar y se lo mandás al comprador junto con el link de la app y la [guía para compradores](GUIA-COMPRADORES.md). En la app lo escribe en **Ya compré → Tengo un código LCJ**.
 
 Llevá una planilla con *código → venta* si querés poder buscar después quién tiene cada código. Con el código, el panel encuentra la licencia.
 

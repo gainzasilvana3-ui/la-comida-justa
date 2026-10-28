@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { configProblem, config } from '../config';
-import { activate, recover, ApiError } from '../license/client';
+import { activate, claim, recover, ApiError } from '../license/client';
 import { syncCatalog } from '../catalog/catalog';
 import { useAccess } from '../license/AccessProvider';
 import { Turnstile, turnstileRequired } from '../license/Turnstile';
@@ -32,8 +32,10 @@ export function RecoveryCodeBox({ code }: { code: string }) {
 
 export function Activation() {
   const { refresh } = useAccess();
-  const [mode, setMode] = useState<'code' | 'recovery'>('code');
+  const [mode, setMode] = useState<'purchase' | 'code' | 'recovery'>('purchase');
   const [code, setCode] = useState('');
+  const [email, setEmail] = useState('');
+  const [orderNumber, setOrderNumber] = useState('');
   const [token, setToken] = useState<string | null>(null);
   const [resetKey, setResetKey] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -43,6 +45,13 @@ export function Activation() {
   const [showHelp, setShowHelp] = useState(false);
   const problem = configProblem();
   const onToken = useCallback((t: string | null) => setToken(t), []);
+  const ready = mode === 'purchase' ? email.includes('@') && /\d/.test(orderNumber) : code.trim().length >= 10;
+
+  const switchMode = (m: typeof mode) => {
+    setMode(m);
+    setError(null);
+    setCode('');
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,8 +66,8 @@ export function Activation() {
     }
     setBusy(true);
     try {
-      if (mode === 'code') {
-        const r = await activate(code, token ?? undefined);
+      if (mode === 'purchase' || mode === 'code') {
+        const r = mode === 'purchase' ? await claim(email, orderNumber, token ?? undefined) : await activate(code, token ?? undefined);
         void syncCatalog();
         setRecoveryCode(r.recoveryCode);
       } else {
@@ -123,37 +132,75 @@ export function Activation() {
 
       <div className="card">
         <div className="segmented" role="group" aria-label="Forma de activar">
-          <button type="button" aria-pressed={mode === 'code'} onClick={() => { setMode('code'); setError(null); setCode(''); }}>
-            Tengo mi código de compra
+          <button type="button" aria-pressed={mode !== 'recovery'} onClick={() => switchMode('purchase')}>
+            Ya compré
           </button>
-          <button type="button" aria-pressed={mode === 'recovery'} onClick={() => { setMode('recovery'); setError(null); setCode(''); }}>
+          <button type="button" aria-pressed={mode === 'recovery'} onClick={() => switchMode('recovery')}>
             Cambié de celular
           </button>
         </div>
         <form onSubmit={submit}>
-          {mode === 'code' ? (
-            <p>Ingresá el código que te llegó por mail cuando compraste el ebook.</p>
+          {mode === 'purchase' ? (
+            <>
+              <p>Ingresá el mail con el que pagaste y el número de pedido que figura en tu mail de compra.</p>
+              <Field label="Mail de la compra" error={null}>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="tunombre@mail.com"
+                  autoComplete="email"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  required
+                  maxLength={320}
+                />
+              </Field>
+              <Field label="Número de pedido" error={error}>
+                <input
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
+                  placeholder="Ej.: 4821"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  required
+                  maxLength={30}
+                  aria-invalid={error ? true : undefined}
+                />
+              </Field>
+            </>
           ) : (
-            <p>Ingresá el código de recuperación que guardaste cuando activaste la app por primera vez.</p>
+            <>
+              {mode === 'code' ? (
+                <p>Ingresá el código de compra que te mandamos.</p>
+              ) : (
+                <p>Ingresá el código de recuperación que guardaste cuando activaste la app por primera vez.</p>
+              )}
+              <Field label={mode === 'code' ? 'Código de compra' : 'Código de recuperación'} error={error}>
+                <input
+                  className="code-input"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder={mode === 'code' ? 'LCJ-XXXX-XXXX-XXXX-XXXX' : 'RCP-XXXX-XXXX-XXXX-XXXX-XXXX'}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  required
+                  maxLength={60}
+                  aria-invalid={error ? true : undefined}
+                />
+              </Field>
+            </>
           )}
-          <Field label={mode === 'code' ? 'Código de compra' : 'Código de recuperación'} error={error}>
-            <input
-              className="code-input"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder={mode === 'code' ? 'LCJ-XXXX-XXXX-XXXX-XXXX' : 'RCP-XXXX-XXXX-XXXX-XXXX-XXXX'}
-              autoComplete="off"
-              autoCapitalize="characters"
-              spellCheck={false}
-              required
-              maxLength={60}
-              aria-invalid={error ? true : undefined}
-            />
-          </Field>
           <Turnstile onToken={onToken} resetKey={resetKey} />
-          <button className="btn block" type="submit" disabled={busy || Boolean(problem) || code.trim().length < 10}>
+          <button className="btn block" type="submit" disabled={busy || Boolean(problem) || !ready}>
             {busy ? 'Activando…' : 'Activar'}
           </button>
+          {mode !== 'recovery' ? (
+            <button type="button" className="btn ghost block" onClick={() => switchMode(mode === 'code' ? 'purchase' : 'code')}>
+              {mode === 'code' ? 'Activar con mi mail y número de pedido' : 'Tengo un código LCJ'}
+            </button>
+          ) : null}
         </form>
       </div>
 
@@ -163,7 +210,7 @@ export function Activation() {
         </h2>
         <ul>
           <li>Cada compra permite usar la app en hasta 2 dispositivos.</li>
-          <li>Tus recetas, menús y listas se guardan solo en tu teléfono. No pedimos nombre, mail ni ubicación.</li>
+          <li>Tus recetas, menús y listas se guardan solo en tu teléfono. El mail solo sirve para encontrar tu compra: no lo guardamos en texto ni lo usamos para otra cosa.</li>
           <li>Si cambiás de celular o borrás los datos del navegador, volvé a entrar con tu código de recuperación. Para no perder tus recetas y listas, exportá un respaldo desde Ajustes antes.</li>
           <li>Para activar hace falta internet. Después funciona sin conexión.</li>
         </ul>

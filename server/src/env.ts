@@ -11,6 +11,10 @@ export interface Env {
   LICENSE_SIGNING_KEY: string;
   CODE_PEPPER: string;
   TURNSTILE_SECRET?: string;
+  // Aviso de ventas de Impultienda (opcional: sin esto el servidor funciona igual, con códigos manuales)
+  IMPULTIENDA_WEBHOOK_SECRET?: string;
+  // Ids de producto de Impultienda que dan acceso a la app, separados por coma
+  APP_PRODUCT_IDS?: string;
 }
 
 export function isProduction(env: Env): boolean {

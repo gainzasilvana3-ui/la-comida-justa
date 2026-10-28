@@ -17,8 +17,8 @@ export function Privacy() {
       <h3>Qué se envía a nuestro servidor</h3>
       <ul>
         <li>
-          <strong>Para verificar tu compra:</strong> el código de compra o de recuperación, una clave pública generada por tu dispositivo (no
-          permite identificarte) y la versión de la app.
+          <strong>Para verificar tu compra:</strong> el código de compra o de recuperación (o el mail y el número de pedido de tu compra),
+          una clave pública generada por tu dispositivo (no permite identificarte) y la versión de la app.
         </li>
         <li>
           <strong>Para renovar el acceso:</strong> el identificador anónimo de tu dispositivo, una firma digital y la hora.
@@ -29,8 +29,9 @@ export function Privacy() {
         </li>
       </ul>
       <p>
-        El servidor guarda la fecha de activación y de la última conexión de cada dispositivo. No guarda tu nombre, mail, teléfono, ubicación,
-        contactos ni datos bancarios. Las direcciones IP se usan solo para limitar intentos y se guardan de forma irreversible (con un código
+        El servidor guarda la fecha de activación y de la última conexión de cada dispositivo. Cuando comprás en la tienda, recibe tu mail y
+        tu número de pedido y los guarda solo en forma irreversible, para reconocer tu compra al activar. No guarda tu nombre, mail en texto,
+        teléfono, ubicación, contactos ni datos bancarios. Las direcciones IP se usan solo para limitar intentos y se guardan de forma irreversible (con un código
         derivado), por poco tiempo.
       </p>
 

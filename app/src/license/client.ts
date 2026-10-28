@@ -114,6 +114,17 @@ export async function activate(code: string, turnstileToken?: string): Promise<{
   return { recoveryCode: data.recoveryCode ?? '' };
 }
 
+/** Primera activación con el mail y el número de pedido de la compra en la tienda. */
+export async function claim(email: string, orderNumber: string, turnstileToken?: string): Promise<{ recoveryCode: string }> {
+  const dev = await deviceKeys();
+  const data = await request<TokenResponse>('/v1/claim', {
+    method: 'POST',
+    body: JSON.stringify({ email, orderNumber, publicJwk: dev.publicJwk, turnstileToken, appVersion: APP_VERSION }),
+  });
+  await storeToken(data);
+  return { recoveryCode: data.recoveryCode ?? '' };
+}
+
 export async function recover(recoveryCode: string, turnstileToken?: string): Promise<{ transferred: boolean }> {
   const dev = await deviceKeys();
   const data = await request<TokenResponse & { transferred: boolean }>('/v1/recover', {

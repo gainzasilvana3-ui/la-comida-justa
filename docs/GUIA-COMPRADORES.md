@@ -1,6 +1,8 @@
 # Guía para compradores
 
-Texto listo para mandar junto con el código (podés copiarlo en el mail de entrega o armar un PDF). Reemplazá `<link de la app>` y `<contacto>`.
+Texto listo para entregar con la compra (podés armar un PDF y cargarlo como entregable del producto en Impultienda). Reemplazá `<link de la app>` y `<contacto>`.
+
+Para compras en Impultienda no hace falta código: el comprador activa con su mail y número de pedido. Si le mandás un código a mano, cambiá el paso 2 por: "Tocá **Ya compré → Tengo un código LCJ** y escribí este código: `LCJ-____-____-____-____`".
 
 ---
 
@@ -8,17 +10,18 @@ Texto listo para mandar junto con el código (podés copiarlo en el mail de entr
 
 Gracias por tu compra. La comida justa es la app que acompaña al ebook: te ayuda a calcular cuánto cocinar según quién come, a planificar el menú de la semana, a armar la lista de compras sin comprar de más y a organizar comidas por tandas.
 
-**Tu código de compra:** `LCJ-____-____-____-____`
-
-Es personal y sirve una sola vez. No lo compartas.
-
 ### 1. Abrí la app
 
 Entrá a **<link de la app>** desde el navegador de tu celular (Chrome en Android, Safari en iPhone).
 
 ### 2. Activala
 
-Escribí tu código de compra y tocá **Activar**. Puede aparecer un recuadro de verificación: es para frenar robots.
+Tocá **Ya compré** y escribí:
+
+- el **mail con el que pagaste**, y
+- tu **número de pedido** (figura en el mail de tu compra y en la página de descargas, como "Pedido").
+
+Tocá **Activar**. Puede aparecer un recuadro de verificación: es para frenar robots.
 
 Después te va a mostrar un **código de recuperación** (empieza con `RCP-`). **Guardalo**: sacale una captura, anotalo o mandátelo por mail. Lo vas a necesitar si cambiás de celular. También lo podés ver después en **Ajustes**.
 
@@ -51,10 +54,10 @@ Podés usar la app en 2 dispositivos a la vez (por ejemplo, celular y tablet) co
 
 ### Preguntas frecuentes
 
-- **"El código no es válido":** revisá que esté completo. No importa si usás mayúsculas o minúsculas.
-- **"Este código ya se activó":** el código de compra sirve una sola vez. Para otro dispositivo usá **Cambié de celular** con tu código de recuperación.
+- **"No encontramos una compra de la app":** revisá que sea el mismo mail con el que pagaste y el número de pedido de la compra donde agregaste la app. Si sigue sin andar, escribinos con tu número de pedido.
+- **"Esta compra ya se activó":** la activación con mail y pedido sirve una sola vez. Para otro dispositivo usá **Cambié de celular** con tu código de recuperación.
 - **"Hay demasiados intentos":** esperá un rato (menos de una hora) y probá de nuevo.
-- **Perdí el código de recuperación:** si todavía tenés la app abierta en algún dispositivo, está en **Ajustes**. Si no, escribinos con tu código de compra.
+- **Perdí el código de recuperación:** si todavía tenés la app abierta en algún dispositivo, está en **Ajustes**. Si no, escribinos con tu número de pedido.
 - **Las cantidades:** son estimaciones orientativas. Podés ajustar cuánto come cada uno en **Ajustes → Factores de porciones**, o tocar cualquier cantidad para cambiarla a mano.
 
 ¿Algo no anda? Escribinos a **<contacto>** contándonos qué pasó (sin mandar capturas de tu código).

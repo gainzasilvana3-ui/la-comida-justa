@@ -1,7 +1,8 @@
 import type { Env } from './env';
 import { configProblem } from './env';
 import { ADMIN_CSP, HttpError, corsHeaders, errorResponse, json, withSecurityHeaders } from './http';
-import { activate, catalog, recover, renew, reportError } from './public-api';
+import { activate, catalog, claim, recover, renew, reportError } from './public-api';
+import { impultiendaWebhook } from './webhook';
 import { requireAdmin, requireSameOrigin } from './admin-auth';
 import { handleAdmin } from './admin-api';
 import { cleanup } from './rate-limit';
@@ -17,6 +18,7 @@ async function route(req: Request, env: Env): Promise<Response> {
     try {
       if (path === '/v1/health' && req.method === 'GET') res = json({ ok: true, ready: configProblem(env) === null });
       else if (path === '/v1/activate' && req.method === 'POST') res = await activate(req, env);
+      else if (path === '/v1/claim' && req.method === 'POST') res = await claim(req, env);
       else if (path === '/v1/recover' && req.method === 'POST') res = await recover(req, env);
       else if (path === '/v1/renew' && req.method === 'POST') res = await renew(req, env);
       else if (path === '/v1/catalog' && req.method === 'GET') res = await catalog(req, env);
@@ -28,6 +30,15 @@ async function route(req: Request, env: Env): Promise<Response> {
     const out = new Response(res.body, res);
     for (const [k, v] of Object.entries(cors)) out.headers.set(k, v);
     return out;
+  }
+
+  if (path === '/webhooks/impultienda') {
+    try {
+      if (req.method !== 'POST') throw new HttpError(405, 'method_not_allowed', 'Solo POST.');
+      return await impultiendaWebhook(req, env);
+    } catch (e) {
+      return toErrorResponse(e);
+    }
   }
 
   if (path === '/admin' || path.startsWith('/admin/')) {

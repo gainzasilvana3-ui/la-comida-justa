@@ -13,14 +13,14 @@ Tus recetas propias (incluidas las fotos que agregues), menús, comensales, desp
 
 ## Qué se envía a nuestro servidor
 
-- **Para verificar tu compra:** el código de compra o de recuperación, una clave pública generada por tu dispositivo (no permite identificarte) y la versión de la app.
+- **Para verificar tu compra:** el código de compra o de recuperación (o el mail y el número de pedido de tu compra), una clave pública generada por tu dispositivo (no permite identificarte) y la versión de la app.
 - **Para renovar el acceso:** el identificador anónimo de tu dispositivo (derivado de esa clave pública), una firma digital y la hora.
 - **Para descargar las recetas del catálogo:** la autorización de acceso.
 - **Errores técnicos (opcional):** el texto técnico del error, la pantalla donde ocurrió y la versión de la app. El servidor quita de ese texto cualquier mail o código antes de guardarlo. Se borran a los 30 días. Se puede desactivar en Ajustes.
 
-El servidor guarda, por cada licencia: el código en forma irreversible, el estado, las fechas de creación y activación, y opcionalmente una referencia de venta que carga el vendedor. Por cada dispositivo: su clave pública, la fecha de activación y la de última conexión.
+El servidor guarda, por cada licencia: el código en forma irreversible, el estado, las fechas de creación y activación, y una referencia de venta (el número de pedido). Cuando la compra se hace en la tienda, la plataforma de ventas (Impultienda) le avisa al servidor con el mail y el número de pedido; el servidor los guarda solo en forma irreversible (un código derivado), para reconocer la compra cuando activás con esos datos. Por cada dispositivo: su clave pública, la fecha de activación y la de última conexión.
 
-No guarda tu nombre, mail, teléfono, ubicación, contactos ni datos bancarios. Las direcciones IP se usan solo para limitar intentos abusivos; se guardan transformadas de forma irreversible y se borran a los 2 días.
+No guarda tu nombre, tu mail en texto, teléfono, ubicación, contactos ni datos bancarios. Las direcciones IP se usan solo para limitar intentos abusivos; se guardan transformadas de forma irreversible y se borran a los 2 días.
 
 ## Servicios de terceros
 

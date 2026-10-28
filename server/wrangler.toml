@@ -25,6 +25,9 @@ ACCESS_TEAM_DOMAIN = "royal-surf-c079.cloudflareaccess.com"
 ACCESS_AUD = "9efca66d4e857fc0cb4db15d3f1555bb92e01168bbfc82c9004e3492c951070d"
 # Mails autorizados a entrar al panel, separados por coma
 ADMIN_EMAILS = "gainzasilvana3@gmail.com"
+# Productos de Impultienda que dan acceso a la app (botón "copiar ID" en Personalización → Ebooks), separados por coma.
+# La clave de firma del aviso va como secreto: `wrangler secret put IMPULTIENDA_WEBHOOK_SECRET`.
+APP_PRODUCT_IDS = "317d1783-4b96-4b21-befb-ba389c13627b"
 
 [[d1_databases]]
 binding = "DB"

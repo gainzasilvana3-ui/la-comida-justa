@@ -16,7 +16,7 @@ import {
 } from '@lcj/shared';
 import type { Env } from './env';
 import { configProblem, isProduction } from './env';
-import { hmac, signingKey } from './crypto';
+import { claimHash, hmac, signingKey } from './crypto';
 import { HttpError, clientIp, json, readJson } from './http';
 import { enforce, hit, peek } from './rate-limit';
 import { getSettings } from './settings';
@@ -33,6 +33,14 @@ const jwkSchema = z.object({
 
 const activateSchema = z.object({
   code: z.string().min(1).max(64),
+  publicJwk: jwkSchema,
+  turnstileToken: z.string().max(4096).optional(),
+  appVersion: z.string().max(20).optional(),
+});
+
+const claimSchema = z.object({
+  email: z.string().min(3).max(320),
+  orderNumber: z.string().min(1).max(30),
   publicJwk: jwkSchema,
   turnstileToken: z.string().max(4096).optional(),
   appVersion: z.string().max(20).optional(),
@@ -182,8 +190,50 @@ export async function activate(req: Request, env: Env): Promise<Response> {
       'Este código ya se activó. Para usar la app en otro dispositivo, ingresá tu código de recuperación.',
     );
   }
+  return firstDevice(env, lic, body.publicJwk);
+}
 
-  const deviceId = await checkDeviceKey(body.publicJwk);
+/** POST /v1/claim: primera activación con el mail y el número de pedido de Impultienda. */
+export async function claim(req: Request, env: Env): Promise<Response> {
+  requireConfig(env);
+  const body = parse(claimSchema, await readJson(req));
+  const ip = await ipLimits(env, req, 'clm');
+  await verifyTurnstile(env, body.turnstileToken, ip);
+
+  const hash = await claimHash(env, body.email, body.orderNumber);
+  if (!hash) {
+    await recordFailure(env, 'clm');
+    throw new HttpError(400, 'invalid_claim', 'Revisá el mail y el número de pedido.');
+  }
+  await enforce(env, `clm:hash:${hash}`, 5, HOUR);
+
+  const lic = await env.DB.prepare('SELECT id, status, max_devices, activated_at FROM licenses WHERE claim_hash = ?1')
+    .bind(hash)
+    .first<LicenseRow>();
+  if (!lic) {
+    await recordFailure(env, 'clm');
+    throw new HttpError(
+      404,
+      'claim_not_found',
+      'No encontramos una compra de la app con ese mail y número de pedido. Usá el mail con el que pagaste y el número de pedido que figura en tu mail de compra.',
+    );
+  }
+  if (lic.status === 'revoked') {
+    throw new HttpError(403, 'revoked', 'Esta compra fue dada de baja. Escribinos si creés que es un error.');
+  }
+  if (lic.activated_at !== null) {
+    throw new HttpError(
+      409,
+      'code_used',
+      'Esta compra ya se activó. Para usar la app en otro dispositivo, tocá "Cambié de celular" e ingresá tu código de recuperación.',
+    );
+  }
+  return firstDevice(env, lic, body.publicJwk);
+}
+
+/** Primer dispositivo de una licencia sin activar: crea el código de recuperación y la autorización. */
+async function firstDevice(env: Env, lic: LicenseRow, publicJwk: z.infer<typeof jwkSchema>): Promise<Response> {
+  const deviceId = await checkDeviceKey(publicJwk);
   const existing = await env.DB.prepare('SELECT license_id FROM devices WHERE id = ?1').bind(deviceId).first<{ license_id: string }>();
   if (existing && existing.license_id !== lic.id) {
     throw new HttpError(409, 'device_conflict', 'Este dispositivo ya tiene otra licencia. Borrá los datos de la app y volvé a intentar.');
@@ -205,7 +255,7 @@ export async function activate(req: Request, env: Env): Promise<Response> {
      VALUES (?1, ?2, ?3, 'active', ?4, ?4)
      ON CONFLICT(id) DO UPDATE SET status = 'active', removed_at = NULL, last_seen_at = ?4`,
   )
-    .bind(deviceId, lic.id, JSON.stringify(body.publicJwk), now)
+    .bind(deviceId, lic.id, JSON.stringify(publicJwk), now)
     .run();
 
   const { token, claims } = await issueToken(env, lic.id, deviceId);

@@ -167,7 +167,7 @@ main.content { flex: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 
 .field > span { font-weight: 600; font-size: 0.95rem; }
 .field .hint { font-size: 0.82rem; color: var(--gris); font-weight: 400; }
 .field .error { font-size: 0.85rem; color: #a3381a; }
-input[type="text"], input[type="number"], input[type="date"], input[type="search"], input:not([type]), select, textarea {
+input[type="text"], input[type="number"], input[type="date"], input[type="search"], input[type="email"], input:not([type]), select, textarea {
   width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 14px; border: 1.5px solid var(--linea); background: var(--papel);
 }
 input[type="search"] { border-radius: 999px; padding-left: 18px; box-shadow: var(--sombra); border-color: transparent; }
